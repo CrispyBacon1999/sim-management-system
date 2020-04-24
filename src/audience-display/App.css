@@ -1,0 +1,257 @@
+:root {
+  --pregame-border: 30px;
+  --realtime-height: 150px;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.background {
+  background: url("/background.png");
+  background-size: cover;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.preview-pane-outer {
+  width: 90%;
+  max-width: 1400px;
+  height: 85%;
+  max-height: 600px;
+  border-radius: var(--pregame-border);
+}
+
+.white-pane {
+  height: calc(100% - 80px);
+  background: whitesmoke;
+  border-radius: var(--pregame-border) var(--pregame-border) 0 0;
+  border: 5px solid black;
+  padding: 20px;
+}
+
+.preview-header {
+  display: grid;
+  font-size: 14px;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr auto;
+  margin-bottom: 60px;
+}
+
+.event-pane {
+  height: 80px;
+  border-radius: 0 0 var(--pregame-border) var(--pregame-border);
+  background: black;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(3, auto);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.team-list-header {
+  display: grid;
+  grid-template-columns: 1fr 90px;
+  font-weight: bold;
+  color: black;
+  padding: 0 10px;
+}
+.team-list-header span:last-child {
+  text-align: right;
+}
+
+.preview-team-list {
+  display: grid;
+  grid-template-rows: repeat(3, 40px);
+  width: 100%;
+  color: white;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke: 1px black;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.team-list-row {
+  border: 2px solid black;
+  border-bottom: none;
+  display: grid;
+  grid-template-columns: 1fr 90px;
+  font-size: 24px;
+  padding: 0 10px;
+}
+.team-list-row span:last-child {
+  text-align: right;
+}
+
+.team-list-row:last-child {
+  border-bottom: 2px solid black;
+}
+
+.preview-team-list.red {
+  background-color: firebrick;
+}
+
+.preview-team-list.blue {
+  background-color: royalblue;
+}
+
+.event-pane .infinite-recharge {
+  height: 65px;
+}
+
+.event-pane .frc {
+  height: 35px;
+  margin: 10px;
+}
+
+.event-pane-title {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.chroma {
+  background: #ff00ff;
+  width: 100vw;
+  height: 100vh;
+}
+
+.realtime-score-display {
+  height: var(--realtime-height);
+  width: 100vw;
+  position: fixed;
+  background: url("/brushed-alum.png") #111111;
+  bottom: 0px;
+  left: 0px;
+}
+
+.event-banner {
+  height: 30px;
+  background: linear-gradient(180deg, #dddddd, #ffffff 45%);
+  display: grid;
+  grid-template-columns: 150px 1fr 1fr 150px;
+  justify-items: center;
+  font-weight: bold;
+  line-height: 30px;
+}
+.event-banner img {
+  height: 30px;
+}
+.score-section {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  height: calc(var(--realtime-height) - 30px);
+}
+
+.pc-box {
+  width: 60px;
+  height: 60px;
+  border: 2px solid black;
+  border-radius: 9px;
+}
+
+.red .pc-box {
+  background-color: firebrick;
+}
+
+.blue .pc-box {
+  background-color: royalblue;
+}
+
+.pc-scores {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: 1fr;
+
+  align-items: center;
+  grid-gap: 20px;
+  padding: 0 60px;
+  text-align: right;
+  font-size: 22px;
+  line-height: 22px;
+  color: white;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke: 1px black;
+  font-weight: bold;
+}
+.pc-scores.red {
+  justify-content: flex-end;
+}
+.pc-scores.blue {
+  justify-content: flex-start;
+}
+.pc-box.count {
+  text-align: center;
+  font-size: 35px;
+  line-height: 53px;
+  -webkit-text-stroke: 2px black;
+}
+.pc-box.locked {
+  background-image: url("/rebel.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.pc-box.complete {
+  background-image: url("/bb8.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.pc-box.auto-wait {
+  background-image: url("/clock.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.scores {
+  display: grid;
+  grid-template-columns: 2fr;
+  grid-template-rows: 30px 1fr;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 42px;
+  line-height: 53px;
+  -webkit-text-stroke: 2px black;
+  color: white;
+  font-weight: bold;
+}
+.timer {
+  grid-column: span 2;
+  border: 1px solid black;
+  background: linear-gradient(#cccccc 30%, #777777 70%);
+  --timer-percent: 45%;
+}
+.timer::before {
+  width: var(--timer-percent);
+  height: 100%;
+  display: block;
+  content: "";
+  background: linear-gradient(90deg, #008800, #00ff00);
+  position: relative;
+  left: 0;
+  top: 0;
+  transition: width 1s;
+}
+.score {
+  width: 90px;
+  border: 1px solid black;
+}
+.score.red {
+  background-color: firebrick;
+}
+.score.blue {
+  background-color: royalblue;
+}
