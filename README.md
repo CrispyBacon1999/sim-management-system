@@ -2,7 +2,7 @@
 
 Created for the FIRST in Michigan FRC Unofficial Discord States.
 
-Runs with the [FRC Simulator](https://ftcsimulator.com).
+Runs with the [FRC Simulator](http://ftcsimulator.org/).
 
 ## Setup
 
