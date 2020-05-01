@@ -1,3 +1,13 @@
+@font-face {
+  font-family: Roboto;
+  src: url("/Roboto-Regular.ttf");
+}
+@font-face {
+  font-family: Roboto;
+  font-weight: bold;
+  src: url("/Roboto-Bold.ttf");
+}
+
 :root {
   --pregame-border: 30px;
   --realtime-height: 150px;
@@ -5,9 +15,8 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -33,7 +42,7 @@ body {
 
 .white-pane {
   height: calc(100% - 80px);
-  background: whitesmoke;
+  background: #cccccc;
   border-radius: var(--pregame-border) var(--pregame-border) 0 0;
   border: 5px solid black;
   padding: 20px;
@@ -44,7 +53,7 @@ body {
   font-size: 14px;
   grid-auto-flow: column;
   grid-template-columns: 1fr auto;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
 }
 
 .event-pane {
@@ -254,4 +263,125 @@ body {
 }
 .score.blue {
   background-color: royalblue;
+}
+
+.breakdowns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  height: auto;
+  grid-gap: 10px;
+}
+
+.breakdown {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 2fr;
+  height: auto;
+  padding: 8px;
+  border-radius: 10px;
+  border: 2px solid black;
+  grid-gap: 10px;
+}
+
+.breakdown.red {
+  display: grid;
+  background-color: firebrick;
+  grid-template-areas: "score teams teams" "points points rp";
+}
+
+.breakdown.blue {
+  display: grid;
+  background: royalblue;
+  grid-template-areas: "teams teams score" "rp points points";
+}
+
+.breakdown .breakdown-score {
+  grid-area: score;
+  text-align: center;
+  padding: 16px;
+  padding-bottom: 0px;
+  border-radius: 8px;
+  border: 2px solid black;
+  background-color: whitesmoke;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.breakdown .breakdown-score.win::after {
+  content: "WIN";
+  font-size: 14px;
+  display: block;
+}
+
+.breakdown .breakdown-rp {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  padding: 4px;
+}
+
+.breakdown .breakdown-rp {
+  grid-area: rp;
+  background-color: #555555;
+  border: 2px solid black;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  font-size: 20px;
+  gap: 4px;
+}
+
+.breakdown .breakdown-point-breakdown {
+  grid-area: points;
+  background-color: #555555;
+  border: 2px solid black;
+  border-radius: 8px;
+  display: grid;
+  padding: 10px;
+  color: white;
+  font-size: 20px;
+  line-height: 20px;
+  text-transform: uppercase;
+  gap: 0 15px;
+}
+
+.breakdown.blue .breakdown-point-breakdown {
+  grid-template-columns: 1fr 35px;
+  text-align: right;
+}
+.breakdown.blue .breakdown-point-breakdown span:nth-child(2n) {
+  text-align: left;
+}
+.breakdown.red .breakdown-point-breakdown {
+  grid-template-columns: 35px 1fr;
+  text-align: left;
+}
+.breakdown.red .breakdown-point-breakdown span:nth-child(2n + 1) {
+  text-align: right;
+}
+
+.blue .rp-item.active {
+  background-color: royalblue;
+}
+.red .rp-item.active {
+  background-color: firebrick;
+}
+
+.rp-item {
+  display: flex;
+  border-radius: 8px;
+  border: 2px solid black;
+  align-content: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.rp-item.win {
+  background-image: url("/trophy.png");
+}
+.rp-item.climb {
+  background-image: url("/climb.png");
+}
+.rp-item.cp {
+  background-image: url("/cp.png");
 }

@@ -1,11 +1,11 @@
 import React from "react";
-import PreviewPane from "./PreviewPane";
+import { default as PreviewPane, PreviewPaneProps } from "./PreviewPane";
 
-class MatchPreview extends React.Component {
+class MatchPreview extends React.Component<PreviewPaneProps, any> {
   render() {
     return (
       <div className="background">
-        <PreviewPane></PreviewPane>
+        <PreviewPane {...this.props}></PreviewPane>
       </div>
     );
   }

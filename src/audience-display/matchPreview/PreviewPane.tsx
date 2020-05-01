@@ -2,20 +2,16 @@ import React from "react";
 import logo from "../assets/infinite_recharge.png";
 import FRC from "../assets/frc.png";
 
-type PreviewPaneState = {
+export type PreviewPaneProps = {
   tournament: string;
   matchCount: number;
   currentMatch: number;
+  eventName: string;
 };
 
-class PreviewPane extends React.Component<any, PreviewPaneState> {
+class PreviewPane extends React.Component<PreviewPaneProps, any> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      tournament: "Qualification",
-      matchCount: 40,
-      currentMatch: 3,
-    };
   }
 
   render() {
@@ -24,8 +20,8 @@ class PreviewPane extends React.Component<any, PreviewPaneState> {
         <div className="white-pane">
           <div className="preview-header">
             <h1>
-              {this.state.tournament} {this.state.currentMatch} of{" "}
-              {this.state.matchCount}
+              {this.props.tournament} {this.props.currentMatch} of{" "}
+              {this.props.matchCount}
             </h1>
             <h1>Match Preview</h1>
           </div>
@@ -68,7 +64,7 @@ class PreviewPane extends React.Component<any, PreviewPaneState> {
             className="infinite-recharge"
             alt="Infinite Recharge"
           ></img>
-          <p className="event-pane-title">FIRST City Regional Event</p>
+          <p className="event-pane-title">{this.props.eventName}</p>
           <img src={FRC} className="frc" alt="FRC"></img>
         </div>
       </div>

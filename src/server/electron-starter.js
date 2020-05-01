@@ -4,6 +4,7 @@ const path = require("path");
 const url = require("url");
 const fs = require("fs");
 const { setupListeners, sendConfig } = require("./watchers/watchers");
+const { setupControlPanelListeners } = require("./watchers/controlPanel");
 
 app.disableHardwareAcceleration();
 
@@ -18,7 +19,17 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
+  const controlWindow = new BrowserWindow({
+    width: 900,
+    height: 300,
+    minWidth: 500,
+    minHeight: 300,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
   // mainWindow.setMenu(null);
+  // controlWindow.setMenu(null);
 
   const startUrl =
     process.env.ELECTRON_START_URL ||
@@ -27,14 +38,24 @@ function createWindow() {
       protocol: "file:",
       slashes: true,
     });
+  const controlUrl =
+    process.env.ELECTRON_START_URL + "#/control" ||
+    url.format({
+      pathname: path.join(__dirname, "/../build/index.html"),
+      hash: "/control",
+      protocol: "file:",
+      slashes: true,
+    });
   mainWindow.loadURL(startUrl);
+  controlWindow.loadURL(controlUrl);
   mainWindow.webContents.openDevTools();
-  startWatchers(mainWindow);
+  startWatchers(mainWindow, controlWindow);
 }
 
-function startWatchers(window) {
+function startWatchers(window, controlPanel) {
   configRequest();
-  setupListeners(window);
+  setupListeners(window, controlPanel);
+  setupControlPanelListeners(window, controlPanel);
 }
 
 function configRequest() {

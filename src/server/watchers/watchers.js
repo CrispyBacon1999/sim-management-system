@@ -3,6 +3,8 @@ const path = require("path");
 
 const { ipcMain } = require("electron");
 
+const scoring = require("./liveScore");
+
 var baseDir = "C:/FRC";
 var configFile = "scoreConfig.json";
 var fileSuffix = ".txt";
@@ -26,7 +28,6 @@ function setupListeners(window) {
       handler: (data) => {
         data = data.toString("utf-8");
         var times = data.split(":");
-        console.log(times);
         if (times.length === 2) {
           var seconds = parseInt(times[0]) * 60 + parseInt(times[1]);
           console.log(seconds);
@@ -34,23 +35,60 @@ function setupListeners(window) {
         }
       },
     },
-    gameState: { file: "GameState" },
+    gameState: {
+      file: "GameState",
+      handler: (data) => {
+        window.webContents.send("gameState", data.toString());
+      },
+    },
     opr: { file: "OPR" },
-    autoRed: { file: "AutoR" },
-    autoBlue: { file: "AutoB" },
-    teleopRed: { file: "TeleR" },
-    teleopBlue: { file: "TeleB" },
-    endgameRed: { file: "EndR" },
-    endgameBlue: { file: "EndB" },
+    autoRed: {
+      file: "AutoR",
+      handler: (data) => {
+        scoring.autonRed(parseInt(data));
+      },
+    },
+    autoBlue: {
+      file: "AutoB",
+      handler: (data) => {
+        scoring.autonBlue(parseInt(data));
+      },
+    },
+    teleopRed: {
+      file: "TeleR",
+      handler: (data) => {
+        scoring.teleopRed(parseInt(data));
+      },
+    },
+    teleopBlue: {
+      file: "TeleB",
+      handler: (data) => {
+        scoring.teleopBlue(parseInt(data));
+      },
+    },
+    endgameRed: {
+      file: "EndR",
+      handler: (data) => {
+        scoring.endgameRed(parseInt(data));
+      },
+    },
+    endgameBlue: {
+      file: "EndB",
+      handler: (data) => {
+        scoring.endgameBlue(parseInt(data));
+      },
+    },
     powerCellRed: {
       file: "PC_R",
       handler: (data) => {
+        scoring.powerCellRed(parseInt(data));
         window.webContents.send("redPC", parseInt(data));
       },
     },
     powerCellBlue: {
       file: "PC_B",
       handler: (data) => {
+        scoring.powerCellBlue(parseInt(data));
         window.webContents.send("bluePC", parseInt(data));
       },
     },

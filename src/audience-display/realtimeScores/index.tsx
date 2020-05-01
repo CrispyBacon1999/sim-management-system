@@ -1,11 +1,12 @@
 import React from "react";
 import firstRise from "../assets/firstrise.png";
 import infiniteRecharge from "../assets/infinite_recharge_black.png";
-import { MatchConfig } from "../config";
+import { MatchConfig, EventDetails } from "../config";
 const { ipcRenderer } = window.require("electron");
 
 type RealtimeScoreProps = {
   config: MatchConfig;
+  eventConfig: EventDetails;
 };
 
 type RealtimeScoreState = {
@@ -47,6 +48,9 @@ class RealtimeScores extends React.Component<
     ipcRenderer.on("blueScore", (event, score) => {
       this.updateBlueScore(score);
     });
+    ipcRenderer.on("bluePC", (event, count) => {
+      this.updateBluePC(count);
+    });
     ipcRenderer.on("timer", (event, seconds) => {
       this.updateTimer(seconds);
     });
@@ -66,13 +70,13 @@ class RealtimeScores extends React.Component<
 
   updateBluePC = (count: number) => {
     this.setState({
-      redPC: count,
+      bluePC: count,
     });
   };
 
   updateBlueScore = (score: number) => {
     this.setState({
-      redScore: score,
+      blueScore: score,
     });
   };
 
@@ -178,8 +182,8 @@ class RealtimeScores extends React.Component<
         <div className="realtime-score-display">
           <div className="event-banner">
             <img src={firstRise} alt="FIRST Rise"></img>
-            <span>Qualification 15 of 44</span>
-            <span>FIRST in Michigan Sim States</span>
+            <span>{`Qualification ${this.props.eventConfig.currentMatch} of ${this.props.eventConfig.matchCount}`}</span>
+            <span>{this.props.eventConfig.eventName}</span>
             <img src={infiniteRecharge} alt="Infinite Recharge"></img>
           </div>
           <div className="score-section">

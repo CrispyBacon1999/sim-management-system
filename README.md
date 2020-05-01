@@ -16,3 +16,4 @@ Just run `/SET OUTPUT_SCORE_FILES=C:/FRC` as a spectator account in the chat.
 ### Todo:
 
 - [ ] Config for file output location
+- [ ] Score breakdown
