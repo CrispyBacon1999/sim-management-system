@@ -145,7 +145,7 @@ function sendConfig(event) {
 
 function createConfig() {
   const filePath = path.join(baseDir, configFile);
-  const defaultPath = path.join(__dirname, "defaultConfig.json");
+  const defaultPath = path.join(__dirname, "../../../defaultConfig.json");
   var data = fs.readFileSync(defaultPath);
   fs.writeFileSync(filePath, data);
 }
