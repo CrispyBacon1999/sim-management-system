@@ -206,19 +206,19 @@ body {
   -webkit-text-stroke: 2px black;
 }
 .pc-box.locked {
-  background-image: url("/rebel.png");
+  background-image: url("./rebel.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
 .pc-box.complete {
-  background-image: url("/bb8.png");
+  background-image: url("./bb8.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
 .pc-box.auto-wait {
-  background-image: url("/clock.png");
+  background-image: url("./clock.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

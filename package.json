@@ -23,12 +23,13 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "nf start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "electron .",
     "clean": "rimraf dist",
+    "dev": "nf start",
     "package": "npm run clean && electron-packager . app --platform win32 --arch x64 --out dist/",
     "setup": "electron-installer-windows --src dist/app-win32-x64/ --arch x64 --out dist/installers"
   },
