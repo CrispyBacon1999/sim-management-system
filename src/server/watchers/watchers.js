@@ -15,12 +15,14 @@ function setupListeners(window) {
       file: "ScoreR",
       handler: (data) => {
         window.webContents.send("redScore", parseInt(data));
+        scoring.scoreRed(parseInt(data));
       },
     },
     scoreBlue: {
       file: "ScoreB",
       handler: (data) => {
         window.webContents.send("blueScore", parseInt(data));
+        scoring.scoreBlue(parseInt(data));
       },
     },
     timer: {

@@ -6,14 +6,14 @@ const { ipcRenderer } = window.require("electron");
 
 type RealtimeScoreProps = {
   config: MatchConfig;
+  blueScore: number;
+  redScore: number;
   eventConfig: EventDetails;
 };
 
 type RealtimeScoreState = {
   bluePC: number;
   redPC: number;
-  blueScore: number;
-  redScore: number;
   timer: number;
   gameState: GameState;
 };
@@ -34,19 +34,12 @@ class RealtimeScores extends React.Component<
     this.state = {
       redPC: 0,
       bluePC: 0,
-      redScore: 0,
-      blueScore: 0,
       timer: 150,
-      gameState: GameState.TELEOP,
+      gameState: GameState.AUTO,
     };
-    ipcRenderer.on("redScore", (event, score) => {
-      this.updateRedScore(score);
-    });
+
     ipcRenderer.on("redPC", (event, count) => {
       this.updateRedPC(count);
-    });
-    ipcRenderer.on("blueScore", (event, score) => {
-      this.updateBlueScore(score);
     });
     ipcRenderer.on("bluePC", (event, count) => {
       this.updateBluePC(count);
@@ -62,21 +55,9 @@ class RealtimeScores extends React.Component<
     });
   };
 
-  updateRedScore = (score: number) => {
-    this.setState({
-      redScore: score,
-    });
-  };
-
   updateBluePC = (count: number) => {
     this.setState({
       bluePC: count,
-    });
-  };
-
-  updateBlueScore = (score: number) => {
-    this.setState({
-      blueScore: score,
     });
   };
 
@@ -202,9 +183,11 @@ class RealtimeScores extends React.Component<
               <div
                 className="timer"
                 style={{ ["--timer-percent" as any]: timer + "%" }}
-              ></div>
-              <div className="score red">{this.state.redScore}</div>
-              <div className="score blue">{this.state.blueScore}</div>
+              >
+                <div className="time">{this.state.timer}</div>
+              </div>
+              <div className="score red">{this.props.redScore}</div>
+              <div className="score blue">{this.props.blueScore}</div>
             </div>
             <div className="pc-scores blue">
               <div className={"pc-box " + powercells.b1.rep}>

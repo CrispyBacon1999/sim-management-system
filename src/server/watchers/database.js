@@ -11,24 +11,24 @@ db.defaults({
     name: "",
     teamCount: -1,
     currentMatch: 1,
-    tournamentLevel: "q",
+    tournamentLevel: "qual",
   },
   schedule: {
     qual: {
       count: -1,
-      matches: [],
+      matches: {},
     },
     qf: {
       count: -1,
-      matches: [],
+      matches: {},
     },
     sf: {
       count: -1,
-      matches: [],
+      matches: {},
     },
     f: {
       count: -1,
-      matches: [],
+      matches: {},
     },
   },
   players: [],
@@ -53,7 +53,7 @@ const postScores = (tournamentLevel, matchNum, scores) => {
 };
 
 const getMatchPlayers = (tournamentLevel, matchNum) => {
-  return db.get(`schedule.${tournamentLevel}.${matchNum}`).value();
+  return db.get(`schedule.${tournamentLevel}.${matchNum}.players`).value();
 };
 
 const getEventDetails = () => {

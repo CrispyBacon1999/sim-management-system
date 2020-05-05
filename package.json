@@ -28,7 +28,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "nf start",
-    "electron": "electron ."
+    "electron": "electron .",
+    "clean": "rimraf dist",
+    "package": "npm run clean && electron-packager . app --platform win32 --arch x64 --out dist/",
+    "setup": "electron-installer-windows --src dist/app-win32-x64/ --arch x64 --out dist/installers"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,6 +54,9 @@
     "@types/socket.io": "^2.1.4",
     "@types/socket.io-client": "^1.4.32",
     "electron": "^8.2.3",
-    "foreman": "^3.0.1"
+    "electron-installer-windows": "^3.0.0",
+    "electron-packager": "^14.2.1",
+    "foreman": "^3.0.1",
+    "rimraf": "^3.0.2"
   }
 }

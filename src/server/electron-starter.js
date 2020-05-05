@@ -17,6 +17,7 @@ function createWindow() {
     minHeight: 506,
     webPreferences: {
       nodeIntegration: true,
+      webSecurity: false,
     },
   });
   const controlWindow = new BrowserWindow({
@@ -26,6 +27,7 @@ function createWindow() {
     minHeight: 300,
     webPreferences: {
       nodeIntegration: true,
+      webSecurity: false,
     },
   });
   // mainWindow.setMenu(null);
@@ -34,20 +36,22 @@ function createWindow() {
   const startUrl =
     process.env.ELECTRON_START_URL ||
     url.format({
-      pathname: path.join(__dirname, "/../build/index.html"),
+      pathname: path.join(__dirname, "/../../build/index.html"),
       protocol: "file:",
       slashes: true,
     });
   const controlUrl =
     process.env.ELECTRON_START_URL + "#/control" ||
     url.format({
-      pathname: path.join(__dirname, "/../build/index.html"),
+      pathname: path.join(__dirname, "/../../build/index.html"),
       hash: "/control",
       protocol: "file:",
       slashes: true,
     });
   mainWindow.loadURL(startUrl);
+  mainWindow.setTitle("FRC Sim Audience Display");
   controlWindow.loadURL(controlUrl);
+  controlWindow.setTitle("FRC Sim Control Panel");
   mainWindow.webContents.openDevTools();
   startWatchers(mainWindow, controlWindow);
 }

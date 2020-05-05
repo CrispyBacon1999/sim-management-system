@@ -10,6 +10,8 @@ const { ipcMain } = require("electron");
 const setupControlPanelListeners = (mainWindow, controlpanel) => {
   console.log(mainWindow);
   console.log(controlpanel);
+  ipcMain.on("setMatchNum", (event, matchNumber) => {});
+  ipcMain.on("getMatchNum", (event) => {});
   ipcMain.on("prestartMatch", (event, matchNumber) => {
     console.log("Prestarting match: " + matchNumber);
     var tLevel = getTournamentLevel();

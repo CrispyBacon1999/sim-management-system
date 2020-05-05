@@ -7,7 +7,7 @@ import ControlPanel from "../fms/ControlPanel";
 import { MatchConfig, EventDetails } from "./config";
 import MatchResults from "./matchResults";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import { Player } from "../models/Player";
+import { Player, TeamPlayers } from "../models/Player";
 import { Breakdown } from "../models/Breakdown";
 
 const { ipcRenderer } = window.require("electron");
@@ -17,10 +17,14 @@ type AppState = {
   scoreConfig: MatchConfig;
   eventDetails: EventDetails;
   matchDetails: MatchDetails;
+  redScore: number;
+  blueScore: number;
   scoreBreakdown: {
     red: Breakdown;
     blue: Breakdown;
   };
+  playersRed: TeamPlayers;
+  playersBlue: TeamPlayers;
 };
 
 export type MatchDetails = {
@@ -49,6 +53,8 @@ class App extends React.Component<any, AppState> {
       matchDetails: {
         players: [],
       },
+      redScore: 0,
+      blueScore: 0,
       scoreBreakdown: {
         red: {
           initiationLine: 0,
@@ -79,6 +85,8 @@ class App extends React.Component<any, AppState> {
           },
         },
       },
+      playersRed: {},
+      playersBlue: {},
     };
     this.loadConfig();
     this.setupListeners();
@@ -110,6 +118,12 @@ class App extends React.Component<any, AppState> {
       window.location.hash = "/matchResults";
     });
     ipcRenderer.on("scoreBreakdown", (event, scores) => {});
+    ipcRenderer.on("redScore", (event, score) => {
+      this.updateRedScore(score);
+    });
+    ipcRenderer.on("blueScore", (event, score) => {
+      this.updateBlueScore(score);
+    });
   };
 
   loadConfig = () => {
@@ -126,7 +140,17 @@ class App extends React.Component<any, AppState> {
       scoreConfig: config,
     });
   };
+  updateRedScore = (score: number) => {
+    this.setState({
+      redScore: score,
+    });
+  };
 
+  updateBlueScore = (score: number) => {
+    this.setState({
+      blueScore: score,
+    });
+  };
   loadMatchDetails = () => {};
 
   render() {
@@ -135,14 +159,21 @@ class App extends React.Component<any, AppState> {
         <Switch>
           <Route path="/matchResults">
             <MatchResults
+              eventConfig={this.state.eventDetails}
               redBreakdown={this.state.scoreBreakdown.red}
               blueBreakdown={this.state.scoreBreakdown.blue}
+              redScore={this.state.redScore}
+              blueScore={this.state.blueScore}
               config={this.state.scoreConfig}
+              playersBlue={this.state.playersBlue}
+              playersRed={this.state.playersRed}
             ></MatchResults>
           </Route>
           <Route path="/liveWindow">
             <RealtimeScores
               eventConfig={this.state.eventDetails}
+              redScore={this.state.redScore}
+              blueScore={this.state.blueScore}
               config={this.state.scoreConfig}
             ></RealtimeScores>
           </Route>

@@ -1,73 +1,25 @@
 import React from "react";
 import logo from "../assets/infinite_recharge.png";
 import FRC from "../assets/frc.png";
-import { MatchConfig } from "../config";
+import { MatchConfig, EventDetails } from "../config";
 import { Breakdown } from "../../models/Breakdown";
+import classNames from "classnames";
+import { TeamPlayers } from "../../models/Player";
 
 type ResultPaneProps = {
   config: MatchConfig;
+  eventConfig: EventDetails;
   redBreakdown: Breakdown;
   blueBreakdown: Breakdown;
-};
-
-type ResultPaneState = {
-  tournament: string;
-  currentMatch: number;
-  eventName: string;
   redScore: number;
   blueScore: number;
-
-  players: Array<Player>;
+  playersRed: TeamPlayers;
+  playersBlue: TeamPlayers;
 };
 
-type Player = {
-  name: string;
-  rank: number;
-  lastRank: number;
-};
-
-class ResultPane extends React.Component<ResultPaneProps, ResultPaneState> {
+class ResultPane extends React.Component<ResultPaneProps, any> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      tournament: "Qualification",
-      currentMatch: 3,
-      eventName: "",
-      redScore: 0,
-      blueScore: 0,
-      players: [
-        {
-          name: "Test 1",
-          rank: 1,
-          lastRank: 2,
-        },
-        {
-          name: "Test 2",
-          rank: 2,
-          lastRank: 1,
-        },
-        {
-          name: "Test 3",
-          rank: 3,
-          lastRank: 3,
-        },
-        {
-          name: "Test 4",
-          rank: 4,
-          lastRank: 5,
-        },
-        {
-          name: "Test 5",
-          rank: 5,
-          lastRank: 4,
-        },
-        {
-          name: "Test 6",
-          rank: 6,
-          lastRank: 6,
-        },
-      ],
-    };
   }
 
   render() {
@@ -76,13 +28,21 @@ class ResultPane extends React.Component<ResultPaneProps, ResultPaneState> {
         <div className="white-pane">
           <div className="preview-header">
             <h1>
-              {this.state.tournament} {this.state.currentMatch}
+              {this.props.eventConfig.tournamentLevel}{" "}
+              {this.props.eventConfig.currentMatch}
             </h1>
             <h1>Match Results</h1>
           </div>
           <div className="breakdowns">
             <div className="breakdown blue">
-              <div className="breakdown-score">45</div>
+              <div
+                className={classNames("breakdown-score", {
+                  win: this.props.blueScore > this.props.redScore,
+                  tie: this.props.blueScore === this.props.redScore,
+                })}
+              >
+                {this.props.blueScore}
+              </div>
               <div className="breakdown-ranks"></div>
               <div className="breakdown-rp">
                 <span>{this.props.blueBreakdown.rp.count} RP</span>
@@ -117,7 +77,14 @@ class ResultPane extends React.Component<ResultPaneProps, ResultPaneState> {
               </div>
             </div>
             <div className="breakdown red">
-              <div className="breakdown-score win">90</div>
+              <div
+                className={classNames("breakdown-score", {
+                  win: this.props.redScore > this.props.blueScore,
+                  tie: this.props.blueScore === this.props.redScore,
+                })}
+              >
+                {this.props.redScore}
+              </div>
               <div className="breakdown-ranks"></div>
               <div className="breakdown-rp">
                 <span>{this.props.redBreakdown.rp.count} RP</span>
@@ -159,7 +126,7 @@ class ResultPane extends React.Component<ResultPaneProps, ResultPaneState> {
             className="infinite-recharge"
             alt="Infinite Recharge"
           ></img>
-          <p className="event-pane-title">{this.state.eventName}</p>
+          <p className="event-pane-title">{this.props.eventConfig.eventName}</p>
           <img src={FRC} className="frc" alt="FRC"></img>
         </div>
       </div>

@@ -240,10 +240,29 @@ body {
 .timer {
   grid-column: span 2;
   border: 1px solid black;
-  background: linear-gradient(#cccccc 30%, #777777 70%);
-  --timer-percent: 45%;
+  color: black;
+  /* background: linear-gradient(#cccccc 30%, #777777 70%); */
+  background: linear-gradient(
+    90deg,
+    #008800,
+    #00ff00 var(--timer-percent),
+    #777777 var(--timer-percent)
+  );
 }
-.timer::before {
+
+.timer .time {
+  margin: auto;
+  font-size: 20px;
+  background-color: white;
+  padding: 5px;
+  line-height: 20px;
+  height: 18px;
+  width: 40px;
+  border-radius: 8px;
+  font-weight: bold;
+  -webkit-text-stroke: 0;
+}
+/* .timer::before {
   width: var(--timer-percent);
   height: 100%;
   display: block;
@@ -253,7 +272,7 @@ body {
   left: 0;
   top: 0;
   transition: width 1s;
-}
+} */
 .score {
   width: 90px;
   border: 1px solid black;
@@ -308,6 +327,12 @@ body {
 
 .breakdown .breakdown-score.win::after {
   content: "WIN";
+  font-size: 14px;
+  display: block;
+}
+
+.breakdown .breakdown-score.tie::after {
+  content: "TIE";
   font-size: 14px;
   display: block;
 }
