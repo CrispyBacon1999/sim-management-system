@@ -52,7 +52,7 @@ function createWindow() {
   mainWindow.setTitle("FRC Sim Audience Display");
   controlWindow.loadURL(controlUrl);
   controlWindow.setTitle("FRC Sim Control Panel");
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   startWatchers(mainWindow, controlWindow);
 }
 
