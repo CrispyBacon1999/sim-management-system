@@ -17,7 +17,6 @@ function createWindow() {
     minHeight: 506,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false,
     },
   });
   const controlWindow = new BrowserWindow({
@@ -27,7 +26,6 @@ function createWindow() {
     minHeight: 300,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false,
     },
   });
   // mainWindow.setMenu(null);

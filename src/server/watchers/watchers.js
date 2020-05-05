@@ -133,6 +133,7 @@ function setupListeners(window) {
 function sendConfig(event) {
   const filePath = path.join(baseDir, configFile);
   if (!fs.existsSync(filePath)) {
+    console.log("Config file doesn't exist, creating now...");
     createConfig();
   }
   fs.readFile(filePath, (err, data) => {
@@ -147,6 +148,7 @@ function createConfig() {
   const filePath = path.join(baseDir, configFile);
   const defaultPath = path.join(__dirname, "../../../defaultConfig.json");
   var data = fs.readFileSync(defaultPath);
+  console.log(data);
   fs.writeFileSync(filePath, data);
 }
 
