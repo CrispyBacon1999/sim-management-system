@@ -1,6 +1,7 @@
 export type Player = {
-  gameName: "";
-  discordName: "";
+  gameName: string;
+  discordName: string;
+  discordID: string;
   rank: number;
 };
 

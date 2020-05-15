@@ -3,8 +3,11 @@ const {
   setMatchNumber,
   getMatchNumber,
   getTournamentLevel,
+  getMatchList,
+  setMatchSchedule,
 } = require("./database");
-const { storeScores, liveScore } = require("./liveScore");
+const { qualMatchSchedule } = require("../matchMaker");
+const { storeScores, liveScore, getScoreBreakdowns } = require("./liveScore");
 const { ipcMain } = require("electron");
 
 const setupControlPanelListeners = (mainWindow, controlpanel) => {
@@ -34,9 +37,27 @@ const setupControlPanelListeners = (mainWindow, controlpanel) => {
     storeScores(tLevel, matchNumber);
   });
   ipcMain.on("postScores", (event) => {
-    mainWindow.webContents.send("scoreBreakdown", liveScore);
+    var breakdowns = getScoreBreakdowns();
+    mainWindow.webContents.send("scoreBreakdown", "red", breakdowns.red);
+    mainWindow.webContents.send("scoreBreakdown", "blue", breakdowns.blue);
     mainWindow.webContents.send("showScoreBreakdown");
   });
+  ipcMain.on("getMatchList", (event, tournamentLevel) => {
+    var matches = getMatchList(tournamentLevel).matches;
+    controlpanel.webContents.send("matchList", tournamentLevel, matches);
+  });
+  ipcMain.on(
+    "generateSchedule",
+    (event, tournamentLevel, matchCountPerTeam) => {
+      if (tournamentLevel === "qual") {
+        qualMatchSchedule(matchCountPerTeam).then((matches) => {
+          setMatchSchedule(tournamentLevel, matches);
+          matches = getMatchList(tournamentLevel).matches;
+          controlpanel.webContents.send("matchList", tournamentLevel, matches);
+        });
+      }
+    }
+  );
 };
 
 module.exports = { setupControlPanelListeners };

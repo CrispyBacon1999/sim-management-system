@@ -1,4 +1,5 @@
 const { postScores: dbPostScores, getMatchScores } = require("./database");
+const { config } = require("./watchers");
 
 const initScores = {
   red: {
@@ -11,13 +12,11 @@ const initScores = {
       controlPanel: 0,
       endgame: 0,
       penalty: 0,
-      rp: {
-        count: 0,
-        win: false,
-        tie: false,
-        cp: false,
-        climb: false,
-      },
+      rp: 0,
+      win: false,
+      tie: false,
+      control_panel: false,
+      climb: false,
     },
   },
   blue: {
@@ -30,13 +29,11 @@ const initScores = {
       controlPanel: 0,
       endgame: 0,
       penalty: 0,
-      rp: {
-        count: 0,
-        win: false,
-        tie: false,
-        cp: false,
-        climb: false,
-      },
+      rp: 0,
+      win: false,
+      tie: false,
+      control_panel: false,
+      climb: false,
     },
   },
 };
@@ -45,6 +42,7 @@ var liveScore = initScores;
 
 const storeScores = (tournamentLevel, matchNumber) => {
   console.log(liveScore);
+  calculateRP();
   dbPostScores(tournamentLevel, matchNumber, liveScore);
 };
 const printScores = () => {
@@ -52,6 +50,46 @@ const printScores = () => {
 };
 const resetScores = () => {
   liveScore = initScores;
+};
+const calculateRP = () => {
+  liveScore.red.breakdown.rp = 0;
+  liveScore.blue.breakdown.rp = 0;
+  // Win ranking point
+  if (liveScore.red.score > liveScore.blue.score) {
+    liveScore.red.breakdown.win = true;
+    liveScore.red.breakdown.rp = 2;
+  } else if (liveScore.blue.score > liveScore.red.score) {
+    liveScore.blue.breakdown.win = true;
+    liveScore.blue.breakdown.rp = 2;
+  } else {
+    liveScore.blue.breakdown.tie = true;
+    liveScore.red.breakdown.tie = true;
+    liveScore.red.breakdown.rp = 1;
+    liveScore.blue.breakdown.rp = 1;
+  }
+  var pcCount = config
+    ? config.stage1PowerCells +
+      config.stage2PowerCells +
+      config.stage3PowerCells
+    : 49;
+  liveScore.blue.breakdown.control_panel =
+    liveScore.blue.breakdown.powerCell >= pcCount;
+  liveScore.red.breakdown.control_panel =
+    liveScore.red.breakdown.powerCell >= pcCount;
+  liveScore.blue.breakdown.climb = liveScore.blue.breakdown.endgame >= 65;
+  liveScore.red.breakdown.climb = liveScore.red.breakdown.endgame >= 65;
+  if (liveScore.blue.breakdown.control_panel) {
+    liveScore.blue.breakdown.rp += 1;
+  }
+  if (liveScore.red.breakdown.control_panel) {
+    liveScore.red.breakdown.rp += 1;
+  }
+  if (liveScore.red.breakdown.climb) {
+    liveScore.red.breakdown.rp += 1;
+  }
+  if (liveScore.blue.breakdown.climb) {
+    liveScore.blue.breakdown.rp += 1;
+  }
 };
 const scoreRed = (value) => {
   liveScore.red.score = value;
@@ -89,6 +127,9 @@ const autonRed = (value) => {
 const autonBlue = (value) => {
   liveScore.blue.breakdown.auton = value;
 };
+const getScoreBreakdowns = () => {
+  return { red: liveScore.red.breakdown, blue: liveScore.blue.breakdown };
+};
 
 module.exports = {
   storeScores,
@@ -107,4 +148,5 @@ module.exports = {
   autonBlue,
   printScores,
   liveScore,
+  getScoreBreakdowns,
 };

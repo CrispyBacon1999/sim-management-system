@@ -17,6 +17,20 @@ type ResultPaneProps = {
   playersBlue: TeamPlayers;
 };
 
+type EventState = {
+  qual: string;
+  qf: string;
+  sf: string;
+  f: string;
+};
+
+const eventStateMap: EventState = {
+  qual: "Qualification",
+  qf: "Quarterfinal",
+  sf: "Semifinal",
+  f: "Final",
+};
+
 class ResultPane extends React.Component<ResultPaneProps, any> {
   constructor(props: any) {
     super(props);
@@ -28,7 +42,11 @@ class ResultPane extends React.Component<ResultPaneProps, any> {
         <div className="white-pane">
           <div className="preview-header">
             <h1>
-              {this.props.eventConfig.tournamentLevel}{" "}
+              {
+                eventStateMap[
+                  this.props.eventConfig.tournamentLevel as keyof EventState
+                ]
+              }{" "}
               {this.props.eventConfig.currentMatch}
             </h1>
             <h1>Match Results</h1>
@@ -45,23 +63,23 @@ class ResultPane extends React.Component<ResultPaneProps, any> {
               </div>
               <div className="breakdown-ranks"></div>
               <div className="breakdown-rp">
-                <span>{this.props.blueBreakdown.rp.count} RP</span>
+                <span>{this.props.blueBreakdown.rp} RP</span>
                 <div
                   className={
                     "rp-item cp " +
-                    (this.props.blueBreakdown.rp.cp ? "active" : "")
+                    (this.props.blueBreakdown.control_panel ? "active" : "")
                   }
                 ></div>
                 <div
                   className={
                     "rp-item climb " +
-                    (this.props.blueBreakdown.rp.climb ? "active" : "")
+                    (this.props.blueBreakdown.climb ? "active" : "")
                   }
                 ></div>
                 <div
                   className={
                     "rp-item win " +
-                    (this.props.blueBreakdown.rp.win ? "active" : "")
+                    (this.props.blueBreakdown.win ? "active" : "")
                   }
                 ></div>
               </div>
@@ -87,23 +105,23 @@ class ResultPane extends React.Component<ResultPaneProps, any> {
               </div>
               <div className="breakdown-ranks"></div>
               <div className="breakdown-rp">
-                <span>{this.props.redBreakdown.rp.count} RP</span>
+                <span>{this.props.redBreakdown.rp} RP</span>
                 <div
                   className={
                     "rp-item cp " +
-                    (this.props.redBreakdown.rp.cp ? "active" : "")
+                    (this.props.redBreakdown.control_panel ? "active" : "")
                   }
                 ></div>
                 <div
                   className={
                     "rp-item climb " +
-                    (this.props.redBreakdown.rp.climb ? "active" : "")
+                    (this.props.redBreakdown.climb ? "active" : "")
                   }
                 ></div>
                 <div
                   className={
                     "rp-item win " +
-                    (this.props.redBreakdown.rp.win ? "active" : "")
+                    (this.props.redBreakdown.win ? "active" : "")
                   }
                 ></div>
               </div>

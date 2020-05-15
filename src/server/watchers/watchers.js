@@ -8,6 +8,7 @@ const scoring = require("./liveScore");
 var baseDir = "C:/FRC";
 var configFile = "scoreConfig.json";
 var fileSuffix = ".txt";
+var config = null;
 
 function setupListeners(window) {
   const files = {
@@ -137,7 +138,7 @@ function sendConfig(event) {
     createConfig();
   }
   fs.readFile(filePath, (err, data) => {
-    var config = JSON.parse(data);
+    config = JSON.parse(data);
     config.stage2PowerCells += config.stage1PowerCells;
     config.stage3PowerCells += config.stage2PowerCells;
     event.reply("scoreConfig", JSON.stringify(config));
@@ -152,4 +153,4 @@ function createConfig() {
   fs.writeFileSync(filePath, data);
 }
 
-module.exports = { setupListeners, sendConfig };
+module.exports = { setupListeners, sendConfig, config };

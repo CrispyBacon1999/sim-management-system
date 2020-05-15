@@ -56,6 +56,10 @@ const getMatchPlayers = (tournamentLevel, matchNum) => {
   return db.get(`schedule.${tournamentLevel}.${matchNum}.players`).value();
 };
 
+const getPlayerList = () => {
+  return db.get(`players`).value();
+};
+
 const getEventDetails = () => {
   return db.get("event").value();
 };
@@ -68,12 +72,32 @@ const setMatchNumber = (matchNum) => {
   db.set(`event.currentMatch`, matchNum).write();
 };
 
+const getMatchList = (tournamentLevel) => {
+  return db.get(`schedule.${tournamentLevel}`).value();
+};
+
 const getTournamentLevel = () => {
   return db.get("event.tournamentLevel").value();
 };
 
 const getMatchNumber = () => {
   return db.get(`event.currentMatch`).value();
+};
+
+const setMatchSchedule = (tournamentLevel, matches) => {
+  console.log(matches);
+  console.log("Setting match schedule... Clearing old data...");
+  db.set(`schedule.${tournamentLevel}.matches`, {}).write();
+  console.log(`Setting match count to ${matches.length}`);
+  db.set(`schedule.${tournamentLevel}.count`, matches.length).write();
+  for (var i = 0; i < matches.length; i++) {
+    console.log(`Setting match #${i + 1}`);
+    var data = matches[i];
+    db.set(`schedule.${tournamentLevel}.matches.${i + 1}`, {
+      played: false,
+      players: data,
+    }).write();
+  }
 };
 
 module.exports = {
@@ -85,4 +109,7 @@ module.exports = {
   setMatchNumber,
   getTournamentLevel,
   getMatchNumber,
+  getPlayerList,
+  getMatchList,
+  setMatchSchedule,
 };

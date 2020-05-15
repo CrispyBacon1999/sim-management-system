@@ -47,6 +47,9 @@ class RealtimeScores extends React.Component<
     ipcRenderer.on("timer", (event, seconds) => {
       this.updateTimer(seconds);
     });
+    ipcRenderer.on("gameState", (event, state) => {
+      this.updateGameState(state);
+    });
   }
 
   updateRedPC = (count: number) => {
@@ -65,6 +68,20 @@ class RealtimeScores extends React.Component<
     console.log(seconds);
     this.setState({
       timer: seconds,
+    });
+  };
+
+  updateGameState = (gameState: string) => {
+    var state: GameState;
+    if (gameState === "AUTO") {
+      state = GameState.TELEOP;
+    } else if (gameState === "ENDGAME") {
+      state = GameState.ENDGAME;
+    } else {
+      state = GameState.TELEOP;
+    }
+    this.setState({
+      gameState: state,
     });
   };
 

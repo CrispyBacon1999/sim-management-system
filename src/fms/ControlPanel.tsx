@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import "./ControlPanel.css";
+import "./ControlPanel.scss";
 
 const { ipcRenderer } = window.require("electron");
 
@@ -19,10 +19,10 @@ type ControlPanelState = {
 };
 
 type Matches = {
-  q: Array<Match>;
-  qf: Array<Match>;
-  sf: Array<Match>;
-  f: Array<Match>;
+  qual: any;
+  qf: any;
+  sf: any;
+  f: any;
 };
 
 type Match = {
@@ -35,7 +35,7 @@ class ControlPanel extends React.Component<any, ControlPanelState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      eventLevel: "q",
+      eventLevel: "qual",
       prestarting: false,
       prestarted: false,
       scoresCommitted: false,
@@ -46,7 +46,7 @@ class ControlPanel extends React.Component<any, ControlPanelState> {
       nextMatch: 1,
       currentMatch: 0,
       matchList: {
-        q: [],
+        qual: [],
         qf: [],
         sf: [],
         f: [],
@@ -58,12 +58,26 @@ class ControlPanel extends React.Component<any, ControlPanelState> {
         prestarting: false,
       });
     });
-    ipcRenderer.once("loadAllMatches", (event, matches) => {
+    ipcRenderer.once("matchList", (event, tournamentLevel, matches) => {
+      console.log(matches);
       this.setState({
-        matchList: matches,
+        matchList: Object.assign(this.state.matchList, {
+          [tournamentLevel]: matches,
+        }),
       });
     });
   }
+
+  componentDidMount() {
+    this.getMatchLists();
+  }
+
+  getMatchLists = () => {
+    ipcRenderer.send("getMatchList", "qual");
+    ipcRenderer.send("getMatchList", "qf");
+    ipcRenderer.send("getMatchList", "sf");
+    ipcRenderer.send("getMatchList", "f");
+  };
 
   prestart = () => {
     ipcRenderer.send("prestartMatch", this.state.nextMatch);
@@ -91,68 +105,94 @@ class ControlPanel extends React.Component<any, ControlPanelState> {
     });
   };
 
+  generateSchedule = () => {
+    ipcRenderer.send("generateSchedule", this.state.eventLevel, 8);
+  };
+
   render() {
     return (
       <div className="background controlPanel">
-        <button
-          className={classnames("button", {
-            preferred: !this.state.prestarting && !this.state.prestarted,
-            loading: this.state.prestarting,
-            disabled: this.state.matchRunning,
-          })}
-          onClick={this.prestart}
-          title={"Load in the next match: #" + this.state.nextMatch}
-        >
-          Prestart
-        </button>
-        <button
-          className={classnames("button", {
-            preferred: this.state.prestarted && !this.state.matchRunning,
-            loading: this.state.prestarting,
-            disabled: this.state.matchRunning,
-          })}
-          onClick={this.matchPreview}
-          title="Show the match preview"
-        >
-          Show Match Teams
-        </button>
-        <button
-          className={classnames("button", {
-            preferred: this.state.prestarted && this.state.matchRunning,
-            loading: this.state.prestarting,
-          })}
-          onClick={this.liveMatch}
-          title="Show the realtime score display"
-        >
-          Show Match
-        </button>
-        <button
-          className="button"
-          onClick={this.commit}
-          title="Saves scores to the database"
-        >
-          Commit Scores
-        </button>
-        <button
-          className="button"
-          onClick={this.post}
-          title="Shows the scores to the audience"
-        >
-          Post Scores
-        </button>
+        <div>
+          <button
+            onClick={this.generateSchedule}
+            className={classnames("button", {
+              disabled:
+                Object.keys(this.state.matchList[this.state.eventLevel])
+                  .length !== 0,
+            })}
+          >
+            Generate Match Schedule
+          </button>
+
+          <button
+            className={classnames("button", {
+              preferred: !this.state.prestarting && !this.state.prestarted,
+              loading: this.state.prestarting,
+              disabled: this.state.matchRunning,
+            })}
+            onClick={this.prestart}
+            title={"Load in the next match: #" + this.state.nextMatch}
+          >
+            Prestart
+          </button>
+          <button
+            className={classnames("button", {
+              preferred: this.state.prestarted && !this.state.matchRunning,
+              loading: this.state.prestarting,
+              disabled: this.state.matchRunning,
+            })}
+            onClick={this.matchPreview}
+            title="Show the match preview"
+          >
+            Show Match Teams
+          </button>
+          <button
+            className={classnames("button", {
+              preferred: this.state.prestarted && this.state.matchRunning,
+              loading: this.state.prestarting,
+            })}
+            onClick={this.liveMatch}
+            title="Show the realtime score display"
+          >
+            Show Match
+          </button>
+          <button
+            className="button"
+            onClick={this.commit}
+            title="Saves scores to the database"
+          >
+            Commit Scores
+          </button>
+          <button
+            className="button"
+            onClick={this.post}
+            title="Shows the scores to the audience"
+          >
+            Post Scores
+          </button>
+        </div>
         <div className="match-list">
-          {this.state.matchList[this.state.eventLevel].map((match: Match) => (
-            <div
-              className="match"
-              onClick={() => {
-                this.nextMatch(match.num);
-              }}
-            >
-              <span>{match.num}</span>
-              <span>{match.scoreBlue}</span>
-              <span>{match.scoreRed}</span>
-            </div>
-          ))}
+          {Object.keys(this.state.matchList[this.state.eventLevel]).map(
+            (num: string) => {
+              var match = this.state.matchList[this.state.eventLevel][num];
+              console.log(match);
+              return (
+                <div
+                  className={classnames("match", {
+                    nextMatch: this.state.nextMatch === parseInt(num),
+                    currentMatch: this.state.currentMatch === parseInt(num),
+                  })}
+                  onClick={() => {
+                    this.nextMatch(parseInt(num));
+                  }}
+                >
+                  <span>{num}</span>
+                  <span>{match.played ? match.scores.red.score : "-"}</span>
+                  <span>{match.played ? match.scores.blue.score : "-"}</span>
+                </div>
+              );
+            }
+          )}
         </div>
       </div>
     );

@@ -4,11 +4,9 @@ export type Breakdown = {
   controlPanel: number;
   endgame: number;
   penalty: number;
-  rp: {
-    count: number;
-    win: boolean;
-    tie: boolean;
-    cp: boolean;
-    climb: boolean;
-  };
+  rp: number;
+  win: boolean;
+  tie: boolean;
+  control_panel: boolean;
+  climb: boolean;
 };

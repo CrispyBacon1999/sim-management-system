@@ -1,5 +1,12 @@
+$primary: #074f57;
+$secondary: #74a57f;
+$tertiary: #e4c5af;
+$primary-alt: #077187;
+$secondary-alt: #9ece9a;
+$white: #fefdfd;
+
 .button {
-  background: #ffff00;
+  background: $tertiary;
   color: black;
   font-weight: bold;
   padding: 10px;
@@ -10,7 +17,7 @@
 }
 
 .button.disabled {
-  background: #dddd99;
+  background: lighten($tertiary, 10%);
   pointer-events: none;
 }
 
@@ -27,35 +34,35 @@
 }
 
 .button.preferred.disabled {
-  background: #88dd88;
+  background: lighten($secondary, 10%);
 }
 
 .button.preferred {
-  background: #00ff00;
+  background: $secondary-alt;
 }
 
 .button:not(.disabled):hover {
-  background: #dddd00;
+  background: darken($tertiary, 10%);
 }
 .button.preferred:not(.disabled):hover {
-  background: #00dd00;
+  background: darken($secondary, 10%);
 }
 
 .controlPanel {
   display: grid;
   grid-auto-flow: row;
-  grid-template-rows: 100px 1fr;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: 1fr;
   align-content: start;
 }
 
 .match-list {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(6, 80px);
+  grid-auto-rows: 80px;
   width: 100%;
-  height: 100%;
-  flex-wrap: wrap;
-  grid-column: 1 / -1;
+  gap: 20px;
+  justify-content: start;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -65,14 +72,12 @@
   grid-template-columns: repeat(2, 1fr);
   border-radius: 8px;
   border: 2px solid black;
-  width: 80px;
-  height: 80px;
   align-items: center;
   justify-items: center;
   font-weight: bold;
   font-size: 20px;
-  margin: 5px;
-  background: white;
+  background: $white;
+  transition: background 0.1s ease-in-out;
 }
 .match *:nth-child(1) {
   grid-column: span 2;
@@ -82,6 +87,21 @@
 }
 .match *:nth-child(3) {
   color: firebrick;
+}
+.match:hover {
+  background: darken($white, 10%);
+}
+.match.currentMatch {
+  background: $primary;
+}
+.match.currentMatch:hover {
+  background: darken($primary, 10%);
+}
+.match.nextMatch {
+  background: $secondary;
+}
+.match.nextMatch:hover {
+  background: darken($secondary, 10%);
 }
 
 @keyframes button-loading {

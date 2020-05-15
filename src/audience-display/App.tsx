@@ -62,13 +62,11 @@ class App extends React.Component<any, AppState> {
           controlPanel: 0,
           endgame: 0,
           penalty: 0,
-          rp: {
-            count: 0,
-            win: false,
-            tie: false,
-            cp: false,
-            climb: false,
-          },
+          rp: 0,
+          win: false,
+          tie: false,
+          control_panel: false,
+          climb: false,
         },
         blue: {
           initiationLine: 0,
@@ -76,13 +74,11 @@ class App extends React.Component<any, AppState> {
           controlPanel: 0,
           endgame: 0,
           penalty: 0,
-          rp: {
-            count: 0,
-            win: false,
-            tie: false,
-            cp: false,
-            climb: false,
-          },
+          rp: 0,
+          win: false,
+          tie: false,
+          control_panel: false,
+          climb: false,
         },
       },
       playersRed: {},
@@ -117,7 +113,24 @@ class App extends React.Component<any, AppState> {
     ipcRenderer.on("showScoreBreakdown", () => {
       window.location.hash = "/matchResults";
     });
-    ipcRenderer.on("scoreBreakdown", (event, scores) => {});
+    ipcRenderer.on(
+      "scoreBreakdown",
+      (event, color: string, scores: Breakdown) => {
+        if (color === "red") {
+          this.setState({
+            scoreBreakdown: Object.assign(this.state.scoreBreakdown, {
+              red: scores,
+            }),
+          });
+        } else {
+          this.setState({
+            scoreBreakdown: Object.assign(this.state.scoreBreakdown, {
+              blue: scores,
+            }),
+          });
+        }
+      }
+    );
     ipcRenderer.on("redScore", (event, score) => {
       this.updateRedScore(score);
     });
