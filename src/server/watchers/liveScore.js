@@ -71,7 +71,7 @@ const calculateRP = () => {
     ? config.stage1PowerCells +
       config.stage2PowerCells +
       config.stage3PowerCells
-    : 49;
+    : 120;
   liveScore.blue.breakdown.control_panel =
     liveScore.blue.breakdown.powerCell >= pcCount;
   liveScore.red.breakdown.control_panel =
