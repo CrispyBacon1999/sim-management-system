@@ -58,7 +58,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/socket.io": "^2.1.4",
     "@types/socket.io-client": "^1.4.32",
-    "electron": "^8.2.3",
+    "electron": "^18.3.7",
     "electron-installer-windows": "^3.0.0",
     "electron-packager": "^14.2.1",
     "foreman": "^3.0.1",
